@@ -1,4 +1,7 @@
 # Meal-bug
 AWS 와 Django를 이용한 카카오톡 급식 채팅봇
 
+###### 학교코드 : B100000593  
+
+### Update  
 5/27 Refactoring 
