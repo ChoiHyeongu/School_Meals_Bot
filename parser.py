@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
- 
+import re
 
 def get_html(url):
    _html = ""
@@ -10,20 +10,33 @@ def get_html(url):
    return _html
  
  
-def get_diet(code, ymd, weekend):
+def get_diet(code, ymd, weekday):
     schMmealScCode = code #int
     schYmd = ymd #str
  
+    num = weekday #int 0월1화2수3목4금5토6일
     URL = (
-            "http://stu.sen.go.kr/sts_sci_md01_001.do?"
-            "schulCode=B100000519&schulCrseScCode=4&schulKndScCode=04"
+            "https://stu.sen.go.kr/sts_sci_md01_001.do?"
+            "schulCode=B100000593&schulCrseScCode=4&schulKndScCode=04"
             "&schMmealScCode=%d&schYmd=%s" % (schMmealScCode, schYmd)
         )
     html = get_html(URL)
-    
-    element = html
-   
+    soup = BeautifulSoup(html, 'html.parser')
+    element = soup.find_all("tr")
+    element = element[2].find_all('td')
+    try:
+        element = element[num]
+        element = str(element)
+        element = element.replace('[', '')
+        element = element.replace(']', '')
+        element = element.replace('<br/>', '\n')
+        element = element.replace('<td class="textC last>', '')
+        element = element.replace('<td class="textC>', '')
+        element = element.replace('</td>', '')
+        element = element.replace('(h)', '')
+        element = element.replace('.', '')
+        element = re.sub(r"\d", "", element)
+
+    except:
+            element = " "
     return element
-    
-    meal = get_diet(2, "2017.12.26")
-    print (meal)
