@@ -15,16 +15,16 @@ def keyboard(request):
  
 @csrf_exempt
 def message(request):
-        message = ((request.body).decode('utf-8'))
+        json_str = ((request.body).decode('utf-8'))
         recevied_json_data = json.loads(json_str)
-        datacontent = recevied_json_data['content']
+        datacontent = recevied_json_data['content'].encode('utf-8')
         
         #date
 
         #Today
         dt1 = datetime.datetime.today()
 
-        local_date(1) = dt1.strftime("%Y.%m.%d")
+        local_date = dt1.strftime("%Y.%m.%d")
         local_weekday1 = dt1.weekday()
         #Today
 
@@ -32,7 +32,7 @@ def message(request):
         dt2 = datetime.datetime.today() + datetime.timedelta(days=1)
 
         local_date2 = dt2.strftime("%Y.%m.%d")
-        local_weekday2 = dt2.weekday)()
+        local_weekday2 = dt2.weekday()
         #Tomorrow
         #date
         
@@ -40,14 +40,14 @@ def message(request):
                 
                 #Time
                 meal_date = str(local_date1)
-                1_wkday = int(local_weekday1)
+                l_wkday = int(local_weekday1)
                 #Time
 
                 #Parsing
-                1_1 = get_diet(2, meal_date, 1_wkday)
+                l_l = get_diet(2, meal_date, l_wkday)
                 #Parsing
 
-        if len(1_1) == 1:
+        if len(l_l) == 1:
                 lunch = "급식이 없습니다."
         else:
                 lunch = meal_date + l_l
