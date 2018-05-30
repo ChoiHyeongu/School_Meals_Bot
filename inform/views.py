@@ -24,7 +24,11 @@ def message(request):
         #Today
         dt1 = datetime.datetime.today()
 
+<<<<<<< HEAD
         local_date = dt1.strftime("%Y.%m.%d")
+=======
+        local_date1 = dt1.strftime("%Y.%m.%d")
+>>>>>>> ac4526f13dd2950386f46d8c255383c2ec25d17e
         local_weekday1 = dt1.weekday()
         #Today
 
