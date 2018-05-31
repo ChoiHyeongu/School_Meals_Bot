@@ -9,20 +9,21 @@ def keyboard(request):
  
         return JsonResponse({
                 'type' : 'buttons',
-                'buttons' : ['Today','Tomorrow']
+                'buttons' : ['오늘급식','내일급식']
                 })
  
 @csrf_exempt
 def message(request):
         json_str = ((request.body).decode('utf-8'))
         recevied_json_data = json.loads(json_str)
-        datacontent = recevied_json_data['content']
+        datacontent = recevied_json_data['content'].encode('utf-8')
         
         #date
 
         #Today
         dt1 = datetime.datetime.today()
 
+        local_date = dt1.strftime("%Y.%m.%d")
         local_date1 = dt1.strftime("%Y.%m.%d")
         local_weekday1 = dt1.weekday()
         #Today
@@ -35,7 +36,7 @@ def message(request):
         #Tomorrow
         #date
         
-        if datacontent == 'Today':
+        if datacontent == '오늘급식':
                 
                 #Time
                 meal_date = str(local_date1)
@@ -44,19 +45,25 @@ def message(request):
 
                 #Parsing
                 l_l = get_diet(2, meal_date, l_wkday)
+                d_d = ged_diet(3, meal_date, l_wkday)
                 #Parsing
 
         if len(l_l) == 1:
                 lunch = "급식이 없습니다."
+                dinner = ""
+        elif len(d_d) == 1:
+                lunch = meal_date + " 중식\n"+l_l
+                dinner = ""
         else:
-                lunch = meal_date + l_l
+                lunch = meal_date + " 중식\n"+l_l
+                dinner = meal_dae + " 석식\n"+d_d
 
         return JsonResponse({
                 'message': {
-                        'text': "Today's lunch is "+'\n'+lunch
+                        'text': lunch + dinner
                 },
                 'keyboard': {
                         'type': 'buttons',
-                        'buttons': ['Today','Tomorrow']
+                        'buttons': ['오늘급식','내일급식']
                 }
         })
