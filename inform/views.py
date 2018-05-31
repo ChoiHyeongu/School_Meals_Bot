@@ -1,10 +1,9 @@
 from django.shortcuts import render
-from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 from pytz import timezone
-from parser import *
-import datetime, json 
-import json
+import datetime , json #datetime 모듈 import
+from parser import * #parser.py import
  
 def keyboard(request):
  
@@ -15,7 +14,7 @@ def keyboard(request):
  
 @csrf_exempt
 def message(request):
-        message = ((request.body).decode('utf-8'))
+        json_str = ((request.body).decode('utf-8'))
         recevied_json_data = json.loads(json_str)
         datacontent = recevied_json_data['content']
         

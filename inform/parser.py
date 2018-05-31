@@ -30,8 +30,8 @@ def get_diet(code, ymd, weekday):
         element = element.replace('[', '')
         element = element.replace(']', '')
         element = element.replace('<br/>', '\n')
-        element = element.replace('<td class="textC last>', '')
-        element = element.replace('<td class="textC>', '')
+        element = element.replace('<td class="textC last">', '')
+		  element = element.replace('<td class="textC">', '')
         element = element.replace('</td>', '')
         element = element.replace('(h)', '')
         element = element.replace('.', '')
@@ -40,3 +40,6 @@ def get_diet(code, ymd, weekday):
     except:
             element = " "
     return element
+
+meal = get_diet(2, "2018.05.29", 3)
+print (meal)
