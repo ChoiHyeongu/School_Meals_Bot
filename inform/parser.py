@@ -31,22 +31,10 @@ def get_diet(code, ymd, weekday):
         element = element.replace(']', '')
         element = element.replace('<br/>', '\n')
         element = element.replace('<td class="textC last">', '')
-<<<<<<< HEAD
-<<<<<<< HEAD
         element = element.replace('<td class="textC">', '')
         element = element.replace('<td class="textC">', '')
-=======
-<<<<<<< HEAD
-=======
->>>>>>> e2302ae5afbc3bd3d00afeb774499567f192c8cc
-		  element = element.replace('<td class="textC">', '')
-=======
         element = element.replace('<td class="textC">', '')
->>>>>>> 7c47e9362bfc2384f513a745fbbeb658c0ec6357
-<<<<<<< HEAD
->>>>>>> e2302ae5afbc3bd3d00afeb774499567f192c8cc
-=======
->>>>>>> e2302ae5afbc3bd3d00afeb774499567f192c8cc
+        element = element.replace('<td class="textC">', '')
         element = element.replace('</td>', '')
         element = element.replace('(h)', '')
         element = element.replace('.', '')
@@ -55,19 +43,6 @@ def get_diet(code, ymd, weekday):
     except:
             element = " "
     return element
-<<<<<<< HEAD
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> e2302ae5afbc3bd3d00afeb774499567f192c8cc
-meal = get_diet(2, "2018.05.29", 3)
+meal = get_diet(2, "2018.05.31",2)
 print (meal)
-=======
->>>>>>> 7c47e9362bfc2384f513a745fbbeb658c0ec6357
-<<<<<<< HEAD
->>>>>>> e2302ae5afbc3bd3d00afeb774499567f192c8cc
-=======
->>>>>>> e2302ae5afbc3bd3d00afeb774499567f192c8cc
