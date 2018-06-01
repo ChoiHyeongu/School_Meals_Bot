@@ -22,6 +22,6 @@ def get_diet(code, ymd):
     html = get_html(URL)
     
     element = html
-  
+ 
     return element
     
