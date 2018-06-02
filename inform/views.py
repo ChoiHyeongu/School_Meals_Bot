@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from pytz import timezone
-import datetime , json #datetime 모듈 import
+import datetime #datetime 모듈 import
+import json
 from parser import * #parser.py import
  
  
@@ -67,17 +68,36 @@ def message(request):
                     'buttons':['오늘','내일']
                 }
        })
-     
+
     elif datacontent == '내일':
-        
-        tomorrow = "내일 급식"
+     
+        #시간 관련
+        meal_date2 = str(local_date2)
+        l_wkday2 = int(local_weekday2)
+        #시간 관련
+ 
+        #파싱
+        l_l2 = get_diet(2, meal_date2, l_wkday2)
+        d_d2 = get_diet(3, meal_date2, l_wkday2)
+        #파싱
+ 
+        if len(l_l2) == 1:
+            lunch2 = "급식이 없습니다."
+            dinner2 = ""
+        elif len(d_d2) == 1:
+            lunch2 = meal_date2 + " 중식\n" + l_l2
+            dinner2 = ""
+        else:
+            lunch2 = meal_date2 + " 중식\n" + l_l2
+            dinner2 = meal_date2 + " 석식\n" + d_d2
         
         return JsonResponse({
-            'message': {
-                'text': tomorrow
-            },
-            'keyboard': {
-                'type':'buttons',
-                'buttons':['오늘','내일']
-            }
-        })
+                'message': {
+                    'text': lunch2 + dinner2
+                },
+                'keyboard': {
+                    'type':'buttons',
+                    'buttons':['오늘','내일']
+                }
+       })
+     
