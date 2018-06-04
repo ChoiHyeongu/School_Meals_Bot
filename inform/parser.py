@@ -17,7 +17,7 @@ def get_diet(code, ymd, weekday):
 
     num = weekday + 1
     URL = (
-            "http://stu.sen.go.kr/sts_sci_md01_001.do?"
+            "https://stu.sen.go.kr/sts_sci_md01_001.do?"
             "schulCode=B100000519&schulCrseScCode=4&schulKndScCode=04"
             "&schMmealScCode=%d&schYmd=%s" % (schMmealScCode, schYmd)
     )
@@ -39,4 +39,5 @@ def get_diet(code, ymd, weekday):
         element = re.sub(r"\d", "", element)
     except:
         element = " "
+
     return element
