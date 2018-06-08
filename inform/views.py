@@ -9,7 +9,7 @@ import datetime, json  # datetime 모듈 import
 def keyboard(request):
     return JsonResponse({
         'type': 'buttons',
-        'buttons': ['오늘', '내일']
+        'buttons': ['오늘 급식', '내일 급식']
     })
 
 
@@ -19,37 +19,67 @@ def answer(request):
     received_json_data = json.loads(json_str)
     datacontent = received_json_data['content']
 
-    if datacontent == '오늘':
+     #오늘
+    todays = datetime.datetime.today()
 
-        meal = get_diet(2, "2018.06.08", 4)
-        lunch = "오늘 급식입니다!\n" + meal
+    local_today = todays.strftime("%Y.%m.%d")
+    local_toweekday = todays.weekday()
+    #오늘
 
+    #내일
+    tomorrow = datetime.datetime.today() + datetime.timedelta(days=1)
+
+    local_tomorrow = tomorrow.strftime("%Y.%m.%d")
+    local_tmweekday = tomorrow.weekday()
+    #내일
+
+    if datacontent == '오늘 급식':
+
+        today_meal = str(local_today)
+        today_wkday = int(local_toweekday)
+
+        #파싱
+        tolunch = get_diet(2, today_meal, today_wkday)
+        #파싱
+
+        if len(tolunch) == 1:
+            print_tomeal = "오늘 점심이 없습니다!" + "\n\n["+today_meal+"]"
+        else:
+            print_tomeal = "오늘 점심입니다!\n\n" + tolunch + "\n["+today_meal+"]"
+            
         return JsonResponse({
             'message': {
-                'text': lunch
+                'text':print_tomeal
             },
             'keyboard': {
                 'type': 'buttons',
-                'buttons': ['오늘', '내일']
+                'buttons': ['오늘 급식', '내일 급식']
             }
 
         })
 
-    elif datacontent == "내일":
+    elif datacontent == "내일 급식":
         
-        tm_meal = get_diet(2, "2018.06.09", 5)
+        tomorrow_meal = str(local_tomorrow)
+        tomorrow_wkday = int(local_tmweekday)
 
-        if len(tm_meal) == 1:
-            tm_meal = "급식이 없습니다!"
+        #파싱
+        tmlunch = get_diet(2, tomorrow_meal, tomorrow_wkday)
+        #파싱
         
+        if len(tmlunch) == 1:
+             print_tmmeal = "내일 점심이 없습니다!" + "\n\n["+tomorrow_meal+"]"
+        else:
+            print_tmmeal = "내일 점심입니다!\n\n" + tmlunch + "\n["+tomorrow_meal+"]"
+
         return JsonResponse(
             {
                 'message': {
-                    'text': tm_meal
+                    'text': print_tmmeal
                 },
                 'keyboard': {
                     'type': 'buttons',
-                    'buttons': ['오늘', '내일']
+                    'buttons': ['오늘 급식', '내일 급식']
                 }
             }
         )
@@ -62,7 +92,7 @@ def answer(request):
                 },
                 'keyboard':{
                     'type': 'buttons',
-                    'buttons': ['오늘', '내일']
+                    'buttons': ['오늘 급식', '내일 급식']
                 }
             }
         )
