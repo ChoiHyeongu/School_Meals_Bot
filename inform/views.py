@@ -6,13 +6,11 @@ from pytz import timezone
 from meal import *
 import datetime, json, sys  
 
-plasterMessage = "#연속동일요청입니다. 나중에 다시 시도해주세요."
-
 def keyboard(request):
 
     return JsonResponse({
         'type': 'buttons',
-        'buttons': ['오늘 급식', '내일 급식', '날씨']
+        'buttons': ['오늘 급식', '내일 급식']
     })
 
 class user_chk():
@@ -45,7 +43,7 @@ def get_meal(dt):
     if len(lunch) == 1:
         print_lunch = "급식이 없습니다!\n" + "["+local_date+"]"
     else:
-        print_lunch = "오늘 점심입니다!\n\n" + lunch + "\n["+local_date+"]"
+        print_lunch = "급식입니다!\n\n" + lunch + "\n["+local_date+"]"
 
     return print_lunch
 
@@ -57,7 +55,7 @@ def ret_proc(output, date):
         },
         'keyboard': {
             'type': 'buttons',
-            'buttons': ['오늘 급식', '내일 급식', '날씨']
+            'buttons': ['오늘 급식', '내일 급식']
         }
     })    
 
@@ -73,8 +71,6 @@ def answer(request):
 
 
     if datacontent == '오늘 급식':
-        if u0.check(user_key):
-            return ret_proc(plasterMessage, "")
 
         today = datetime.datetime.today()
         diet = get_meal(today)
@@ -82,9 +78,6 @@ def answer(request):
 
 
     elif datacontent == "내일 급식":
-       
-        if u1.check(user_key):
-            return ret_proc(plasterMessage, "")
 
         tomorrow = datetime.datetime.today() + datetime.timedelta(days=1)
         diet = get_meal(tomorrow)
@@ -100,7 +93,7 @@ def answer(request):
                 },
                 'keyboard': {
                     'type': 'buttons',
-                    'buttons': ['오늘 급식', '내일 급식', '날씨']
+                    'buttons': ['오늘 급식', '내일 급식']
                 }
             }
         )
@@ -113,7 +106,7 @@ def answer(request):
                 },
                 'keyboard':{
                     'type': 'buttons',
-                    'buttons': ['오늘 급식', '내일 급식', '날씨']
+                    'buttons': ['오늘 급식', '내일 급식']
                 }
             }
         )
