@@ -10,40 +10,20 @@ def keyboard(request):
 
     return JsonResponse({
         'type': 'buttons',
-        'buttons': ['오늘 급식', '내일 급식']
+        'buttons': ['급식', '오늘 급식']
     })
 
-class user_chk():
-    
-    def __init__(self):
-        self.pre_key = ""  #previous user_key
-        self.now_key = ""  #now user_key
-
-    def check(self, key):
-        self.now_key = key
-
-        if self.pre_key == self.now_key :
-            passcode = 1
-        else :
-            self.pre_key = self.now_key
-            passcode = 0
-        return passcode
-
-u0 = user_chk()
-u1 = user_chk()
-u2 = user_chk()
-
-def get_meal(dt):
+def get_meal(dt, weekday):
     
     local_date = dt.strftime("%Y.%m.%d")
-    local_weekday = dt.weekday()
+    print_date = dt.strftime("%Y.%m")
 
-    lunch = get_diet(2, local_date, local_weekday)
+    lunch = get_diet(2, local_date, weekday)
 
     if len(lunch) == 1:
-        print_lunch = "급식이 없습니다!\n" + "["+local_date+"]"
+        print_lunch = " 급식이 없습니다!\n"
     else:
-        print_lunch = "급식입니다!\n\n" + lunch + "\n["+local_date+"]"
+        print_lunch = " 급식입니다!\n" + "──────────────\n" +lunch + "──────────────"
 
     return print_lunch
 
@@ -55,11 +35,9 @@ def ret_proc(output, date):
         },
         'keyboard': {
             'type': 'buttons',
-            'buttons': ['오늘 급식', '내일 급식']
+            'buttons': ['월요일', '화요일', '수요일','목요일', '금요일', '나가기']
         }
     })    
-
-
 
 @csrf_exempt
 def answer(request):
@@ -67,50 +45,72 @@ def answer(request):
     json_str = ((request.body).decode('utf-8'))
     received_json_data = json.loads(json_str)
     datacontent = received_json_data['content']
-    user_key = received_json_data['user_key']
 
+    if datacontent == '급식':
 
-    if datacontent == '오늘 급식':
-
-        today = datetime.datetime.today()
-        diet = get_meal(today)
-        return ret_proc(diet, "오늘 ")
-
-
-    elif datacontent == "내일 급식":
-
-        tomorrow = datetime.datetime.today() + datetime.timedelta(days=1)
-        diet = get_meal(tomorrow)
-        return ret_proc(diet, "내일 ")
-
-    
-    elif datacontent == "날씨":
-
-        return JsonResponse(
+         return JsonResponse(
             {
                 'message': {
-                    'text': "아직 구현되지 않았습니다. 조금만 기다려주세요!"
+                    'text': "요일을 고르세요!"
                 },
                 'keyboard': {
                     'type': 'buttons',
-                    'buttons': ['오늘 급식', '내일 급식']
+                    'buttons': ['월요일', '화요일', '수요일','목요일', '금요일', '나가기']
                 }
             }
         )
 
-    else:
-        return JsonResponse(
+    elif datacontent == "오늘 급식":
+
+        tomorrow = datetime.datetime.today()
+        t_weekday = tomorrow.weekday()
+        diet = get_meal(tomorrow, t_weekday)
+        return ret_proc(diet, "오늘")
+
+
+    elif datacontent == "월요일":
+        
+        weekday1 = datetime.datetime.today();
+        diet = get_meal(weekday1, 0)
+        return ret_proc(diet, "월요일")
+
+    elif datacontent == "화요일":
+            
+        weekday2 = datetime.datetime.today();
+        diet = get_meal(weekday2, 1)
+        return ret_proc(diet, "화요일")
+
+    elif datacontent == "수요일":
+            
+        weekday3 = datetime.datetime.today();
+        diet = get_meal(weekday3, 2)
+        return ret_proc(diet, "수요일")   
+
+    elif datacontent == "목요일":
+            
+        weekday4 = datetime.datetime.today();
+        diet = get_meal(weekday4, 3)
+        return ret_proc(diet, "목요일")   
+
+    elif datacontent == "금요일":
+            
+        weekday5 = datetime.datetime.today();
+        diet = get_meal(weekday5, 4)
+        return ret_proc(diet, "금요일")   
+
+    elif datacontent == "나가기":
+        
+       return JsonResponse(
             {
                 'message': {
-                    'text': '버튼이 아닙니다.'
+                    'text': "나가기를 누르셨습니다!"
                 },
-                'keyboard':{
+                'keyboard': {
                     'type': 'buttons',
-                    'buttons': ['오늘 급식', '내일 급식']
+                    'buttons': ['급식', '오늘 급식']
                 }
             }
-        )
-
+       )
 
 
 
