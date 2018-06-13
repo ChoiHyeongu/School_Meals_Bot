@@ -16,7 +16,6 @@ def keyboard(request):
 def get_meal(dt, weekday):
     
     local_date = dt.strftime("%Y.%m.%d")
-    print_date = dt.strftime("%Y.%m")
 
     lunch = get_diet(2, local_date, weekday)
 
@@ -27,17 +26,28 @@ def get_meal(dt, weekday):
 
     return print_lunch
 
-def ret_proc(output, date):
+def ret_proc(output, date, return_key):
     
-    return JsonResponse({
-        'message': {
-            'text': date + output
-        },
-        'keyboard': {
-            'type': 'buttons',
-            'buttons': ['월요일', '화요일', '수요일','목요일', '금요일', '나가기']
-        }
-    })    
+    if return_key == 1:
+        return JsonResponse({
+            'message': {
+                'text': date + output
+         },
+         'keyboard': {
+             'type': 'buttons',
+             'buttons': ['월요일', '화요일', '수요일','목요일', '금요일', '나가기']
+         }
+     })  
+    else:
+         return JsonResponse({
+            'message': {
+                'text': date + output
+         },
+         'keyboard': {
+             'type': 'buttons',
+             'buttons': ['급식', '오늘 급식', '내일 급식']
+         }
+     })  
 
 @csrf_exempt
 def answer(request):
@@ -62,41 +72,48 @@ def answer(request):
 
     elif datacontent == "오늘 급식":
 
-        tomorrow = datetime.datetime.today()
-        t_weekday = tomorrow.weekday()
-        diet = get_meal(tomorrow, t_weekday)
-        return ret_proc(diet, "오늘")
+        t_lunch = datetime.datetime.today()
+        t_weekday1 = t_lunch.weekday()
+        diet = get_meal(t_lunch, t_weekday1)
+        return ret_proc(diet, "오늘", 0)
+
+    elif datacontent == "내일 급식":
+
+        tomorrow = datetime.datetime.today() + datetime.timedelta(days=1)
+        t_weekday2 = tomorrow.weekday()
+        diet = get_meal(tomorrow, t_weekday2)
+        return ret_proc(diet, "내일", 0)
 
 
     elif datacontent == "월요일":
         
         weekday1 = datetime.datetime.today();
         diet = get_meal(weekday1, 0)
-        return ret_proc(diet, "월요일")
+        return ret_proc(diet, "월요일", 1)
 
     elif datacontent == "화요일":
             
         weekday2 = datetime.datetime.today();
         diet = get_meal(weekday2, 1)
-        return ret_proc(diet, "화요일")
+        return ret_proc(diet, "화요일", 1)
 
     elif datacontent == "수요일":
             
         weekday3 = datetime.datetime.today();
         diet = get_meal(weekday3, 2)
-        return ret_proc(diet, "수요일")   
+        return ret_proc(diet, "수요일", 1)   
 
     elif datacontent == "목요일":
             
         weekday4 = datetime.datetime.today();
         diet = get_meal(weekday4, 3)
-        return ret_proc(diet, "목요일")   
+        return ret_proc(diet, "목요일", 1)   
 
     elif datacontent == "금요일":
             
         weekday5 = datetime.datetime.today();
         diet = get_meal(weekday5, 4)
-        return ret_proc(diet, "금요일")   
+        return ret_proc(diet, "금요일", 1)   
 
     elif datacontent == "나가기":
         
@@ -107,7 +124,7 @@ def answer(request):
                 },
                 'keyboard': {
                     'type': 'buttons',
-                    'buttons': ['급식', '오늘 급식']
+                    'buttons': ['급식', '오늘 급식', '내일 급식']
                 }
             }
        )
