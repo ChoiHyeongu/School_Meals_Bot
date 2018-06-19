@@ -10,7 +10,7 @@ def keyboard(request):
 
     return JsonResponse({
         'type': 'buttons',
-        'buttons': ['급식', '오늘 급식']
+        'buttons': ['오늘 급식', '내일 급식', '주간 급식']
     })
 
 def get_meal(dt, weekday):
@@ -45,7 +45,7 @@ def ret_proc(output, date, return_key):
          },
          'keyboard': {
              'type': 'buttons',
-             'buttons': ['급식', '오늘 급식', '내일 급식']
+             'buttons': ['오늘 급식', '내일 급식', '주간 급식']
          }
      })  
 
@@ -56,7 +56,7 @@ def answer(request):
     received_json_data = json.loads(json_str)
     datacontent = received_json_data['content']
 
-    if datacontent == '급식':
+    if datacontent == '주간 급식':
 
          return JsonResponse(
             {
@@ -124,10 +124,7 @@ def answer(request):
                 },
                 'keyboard': {
                     'type': 'buttons',
-                    'buttons': ['급식', '오늘 급식', '내일 급식']
+                    'buttons': ['오늘 급식', '내일 급식', '주간 급식']
                 }
             }
        )
-
-
-
