@@ -4,13 +4,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from pytz import timezone
 from meal import *
+from schedule import *
 import datetime, json, sys  
 
 def keyboard(request):
 
     return JsonResponse({
         'type': 'buttons',
-        'buttons': ['오늘 급식', '내일 급식', '주간 급식', '봇 정보']
+        'buttons': ['오늘 급식', '내일 급식', '주간 급식', '학사일정', '봇 정보']
     })
 
 def get_meal(dt, weekday):
@@ -125,6 +126,20 @@ def answer(request):
                 'keyboard': {
                     'type': 'buttons',
                     'buttons': ['오늘 급식', '내일 급식', '주간 급식', '봇 정보']
+                }
+            }
+       )
+    
+    elif datacontent == '학사일정':
+        
+        return JsonResponse(
+            {
+                'message': {
+                    'text': "학사일정을 고르세요!"
+                },
+                'keyboard': {
+                    'type': 'buttons',
+                    'buttons': ['기말고사', '여름 방학']
                 }
             }
        )
