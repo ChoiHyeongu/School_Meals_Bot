@@ -168,5 +168,16 @@ def answer(request):
                 }
             }
        )
+   elif datacontent == '봇 정보':
 
-
+        return JsonResponse(
+            {
+                'message': {
+                    'text': "[개발/기획/운영] : 컴퓨터네트워크과 최형우"
+                },
+                'keyboard': {
+                    'type': 'buttons',
+                    'buttons': ['오늘 급식', '내일 급식', '주간 급식', '봇 정보']
+                }
+            }
+       )
